@@ -14,32 +14,34 @@
     const pos={food:[[-13,-18],[-1,-17],[8,-14],[-21,-3],[-6,4],[21,-1],[5,31],[25,23]],fish:[[-9,14],[9,20],[23,15],[-24,20]],hunt:[[14,-9],[-23,6],[19,26],[-14,31]],amulet:[[-27,19],[24,-2],[5,32],[-4,-35]],enemy:[[8,1],[23,13],[-13,28]]};
     const arr=[];for(const [type,spots] of Object.entries(pos))spots.forEach(([x,z],i)=>arr.push({id:type+i,type,x,z,done:false,t:c0(i),hp:2}));return arr;
   }
-  function getSaveKey(){return 'batalha_expedicao_v13_'+S.tribe+'_'+S.arena;}
+  function getSaveKey(){return S.profile==='explorador'?'batalha_expedicao_v18_explorador_'+S.tribe+'_'+S.arena:'batalha_expedicao_v13_'+S.tribe+'_'+S.arena;}
   function save(){try{const collected=S.items.filter(i=>i.done).map(i=>i.id);localStorage.setItem(getSaveKey(),JSON.stringify({collected,score:S.score,goalDone:S.goalDone}));}catch{}}
   function load(){try{const saved=JSON.parse(localStorage.getItem(getSaveKey())||'{}');if(Array.isArray(saved.collected)){S.items.forEach(i=>{i.done=saved.collected.includes(i.id)});S.score=Number(saved.score)||0;S.goalDone=saved.goalDone===undefined?Object.keys(OBJ).every(k=>S.items.filter(i=>i.done&&i.type===k).length>=OBJ[k]):Boolean(saved.goalDone);}}catch{}}
-  function start({tribe,arena,role}){
+  function start({tribe,arena,role,profile}){
     const safe=TA[tribe]?tribe:'munduruku',rival=safe==='munduruku'?'muirapinima':'munduruku';
-    S={tribe:safe,rival,arena:TA[arena]?arena:safe,role,x:-8,z:-26,yaw:0,hp:100,stamina:100,score:0,hit:0,camdrag:0,tool:'lança',aiMode:'seguir',squad:[{x:-10,z:-29,hp:100,angle:0},{x:-5,z:-30,hp:100,angle:0}],items:placeItems(),enemy:[],animals:[],goalDone:false,elapsed:0,lastCombat:0,autoSave:0,cloud:[],objective:'Explore os caminhos e colete alimentos'};
+    S={tribe:safe,rival,arena:TA[arena]?arena:safe,role,profile:profile==='explorador'?'explorador':'guerreiro',x:-8,z:-26,yaw:0,hp:100,stamina:100,score:0,hit:0,camdrag:0,tool:'lança',aiMode:'seguir',squad:[{x:-10,z:-29,hp:100,angle:0},{x:-5,z:-30,hp:100,angle:0}],items:placeItems(),enemy:[],animals:[],goalDone:false,elapsed:0,lastCombat:0,autoSave:0,cloud:[],objective:'Explore os caminhos e colete alimentos'};
     S.enemy=S.items.filter(i=>i.type==='enemy').map((i,index)=>({id:i.id,x:i.x,z:i.z,homeX:i.x,homeZ:i.z,hp:75,t:index+2,respawn:0,cd:0}));
     S.animals=S.items.filter(i=>i.type==='hunt').map((i,index)=>({id:i.id,x:i.x,z:i.z,homeX:i.x,homeZ:i.z,phase:index*2.13}));
-    load();window.GuardianV14?.start(S);window.TrailsV15?.start(S);active=true;sessionStarted=performance.now();keys={};joy={x:0,y:0};
-    $('expTribe').textContent=TA[safe].name;$('expRegion').textContent=TA[S.arena].region;
+    load();window.GuardianV14?.start(S);window.TrailsV15?.start(S);window.FaunaV17?.start(S);window.AdventureV18?.start(S);window.SurvivalV19?.start(S);window.MythosV18?.start(S);active=true;sessionStarted=performance.now();keys={};joy={x:0,y:0};
+    $('expTribe').textContent=S.profile==='explorador'?'EXPLORADOR':TA[safe].name;$('expRegion').textContent=TA[S.arena].region;
     /* O cocar do cabeçalho já vem do HTML, conservando seu cache PWA. */
-    document.querySelectorAll('[data-exp-tool]').forEach(b=>b.classList.toggle('selected',b.dataset.expTool==='lança'));
-    notify('MISSÃO INICIADA: encontre alimentos, peixes, animais simulados e amuletos.',4);
+    document.querySelectorAll('[data-exp-tool]').forEach(b=>b.classList.toggle('selected',b.dataset.expTool===S.tool));
+    notify(S.profile==='explorador'?'🧭 EXPEDIÇÃO: equipamentos carregados. Observe a fauna e explore a floresta!':'🌿 EXPEDIÇÃO: proteja a floresta e explore os caminhos!',4);
     updateUI();drawMap();
   }
   function notify(t,seconds=2.4){$('expMessage').textContent=t;$('expMessage').classList.add('visible');messageUntil=performance.now()+seconds*1000;}
   function getCounts(){const n={food:0,fish:0,hunt:0,amulet:0};S.items.forEach(i=>{if(i.done&&i.type in n)n[i.type]++;});return n;}
   function nearest(){let item=null,min=Infinity;for(const e of S.items){if(e.done||e.type==='enemy')continue;const d=Math.hypot(e.x-S.x,e.z-S.z);if(d<min){min=d;item=e;}}return {item,d:min};}
-  function interact(){if(!active||!S)return;const {item,d}=nearest();if(!item||d>4){notify('Aproxime-se de um brilho no cenário para coletar ou pescar.');return;}
-    if(item.type==='hunt'){notify('Para caça simulada, equipe o arco e use CONFRONTO próximo ao animal.');return;}
-    item.done=true;const gain=item.type==='amulet'?150:item.type==='fish'?70:50;S.score+=gain;window.GuardianV14?.addXP(gain);
+  function interact(){if(!active||!S)return;if(window.SurvivalV19?.interact())return;const {item,d}=nearest();if(d>3.0&&window.FaunaV17?.interact())return;if(!item||d>4){notify('Aproxime-se de um brilho no cenário para coletar ou pescar.');return;}
+    if(item.type==='hunt'){if(S.profile==='explorador'){item.done=true;S.score+=110;window.GuardianV14?.addXP(110);notify('🔭 Registro de fauna realizado sem abate! +110 XP');save();updateUI();checkComplete();return;}notify('Para caça simulada, equipe o arco e use CONFRONTO próximo ao animal.');return;}
+    item.done=true;window.AdventureV18?.onCollect(item.type);const gain=item.type==='amulet'?150:item.type==='fish'?70:50;S.score+=gain;window.GuardianV14?.addXP(gain);
     notify(item.type==='food'?'🌿 Alimento coletado! +50':item.type==='fish'?'🐟 Pescaria concluída! +70':'💎 Amuleto de fantasia encontrado! +150');
     save();updateUI();checkComplete();
   }
   function combat(){if(!active||!S)return;const t=performance.now();if(t-S.lastCombat<600)return;S.lastCombat=t;
+    if(window.AdventureV18?.attack())return;
     if(window.GuardianV14?.combat())return;
+    if(window.FaunaV17?.combat())return;
     let nearestEnemy=null,min=Infinity;for(const e of S.enemy){if(e.hp<=0)continue;const d=Math.hypot(S.x-e.x,S.z-e.z);if(d<min){min=d;nearestEnemy=e;}}
     const animals=S.animals.filter(a=>!S.items.find(i=>i.id===a.id).done);
     let wild=null,wDist=Infinity;for(const a of animals){const d=Math.hypot(S.x-a.x,S.z-a.z);if(d<wDist){wDist=d;wild=a;}}
@@ -59,7 +61,7 @@
     let az=-joy.y + Number(!!(keys.w||keys.arrowup))-Number(!!(keys.s||keys.arrowdown));
     const length=Math.hypot(ax,az);if(length>1){ax/=length;az/=length;}
     const moving=Math.hypot(ax,az)>.1;const sprint=keys.shift||keys.run;
-    const speed=(sprint&&S.stamina>2?8:4.4)*(S.z>13&&S.z<22?.72:1);
+    const speed=(sprint&&S.stamina>2?8:4.4)*(S.z>13&&S.z<22?.72:1)*(window.FaunaV17?.speedMultiplier()||1);
     S.x=clamp(S.x+(f*az+g*ax)*dt*speed,-43,43);
     S.z=clamp(S.z+(g*az-f*ax)*dt*speed,-43,43);
     S.stamina=clamp(S.stamina+(moving&&sprint?-22:14)*dt,0,100);
@@ -84,18 +86,18 @@
         }
       }else {e.x+=Math.sin(S.elapsed*.5+e.t)*dt*.32;e.z+=Math.cos(S.elapsed*.6+e.t)*dt*.32;}
     }
-    window.GuardianV14?.tick(dt);window.TrailsV15?.tick(dt);
+    window.GuardianV14?.tick(dt);window.TrailsV15?.tick(dt);window.FaunaV17?.tick(dt);window.AdventureV18?.tick(dt);window.SurvivalV19?.tick(dt);window.MythosV18?.tick(dt);
     if(UIclock>.25){updateUI();drawMap();UIclock=0;}
     if(performance.now()>messageUntil)$('expMessage').classList.remove('visible');
   }
   function checkComplete(){const a=getCounts(),all=Object.keys(OBJ).every(k=>a[k]>=OBJ[k]);if(all&&!S.goalDone){S.goalDone=true;S.score+=500;window.GuardianV14?.addXP(500);notify('🏆 MISSÃO CONCLUÍDA! Aldeia abastecida. +500 pontos!',7);save();} }
   function updateUI(){if(!S)return;const a=getCounts(),quota=Object.keys(OBJ).reduce((v,k)=>v+Math.min(a[k],OBJ[k]),0);
-    $('expProgress').style.width=(quota/12*100)+'%';$('expMissionCount').textContent=`${a.food}/5 alimentos · ${a.fish}/2 peixes · ${a.hunt}/2 caças · ${a.amulet}/3 amuletos`;
-    $('expObjective').textContent=S.goalDone?'MISSÃO CONCLUÍDA · +500 XP':`Equipe ${S.tribe==='munduruku'?'Munduruku':'Muirapinima'} · ${S.score} pontos`;
-    const near=nearest();const kind={food:'alimentos',fish:'ponto de pesca',hunt:'animal fictício',amulet:'amuleto'};
+    $('expProgress').style.width=(quota/12*100)+'%';$('expMissionCount').textContent=`${a.food}/5 alimentos · ${a.fish}/2 peixes · ${a.hunt}/2 ${S.profile==='explorador'?'registros':'caças'} · ${a.amulet}/3 amuletos`;
+    $('expObjective').textContent=S.goalDone?'MISSÃO CONCLUÍDA · +500 XP':`${S.profile==='explorador'?'Explorador · '+TA[S.arena].region:'Equipe '+TA[S.tribe].name} · ${S.score} pontos`;
+    const near=nearest();const kind={food:'alimentos',fish:'ponto de pesca',hunt:S.profile==='explorador'?'observação de fauna':'animal fictício',amulet:'amuleto'};
     $('expHint').textContent=near.item?`Perto de ${kind[near.item.type]} · ${Math.round(near.d)} m | Vida ${Math.ceil(S.hp)} · Energia ${Math.ceil(S.stamina)} · ${S.aiMode==='seguir'?'equipe seguindo':'equipe defendendo'}`:'Explore o mapa para localizar recursos.';
     const name=S.tribe==='munduruku'?'Munduruku':'Muirapinima';
-    $('expSquad').textContent=window.GuardianV14?.mode==='solo'?`♙ ${name} SOLO  |  Você ${Math.ceil(S.hp)} ♥`:`◈ ${name} 3/3  |  Você ${Math.ceil(S.hp)} ♥  •  2 aliados IA`;
+    $('expSquad').textContent=window.GuardianV14?.mode==='solo'?`♙ ${S.profile==='explorador'?'EXPLORADOR':name} SOLO | ${Math.ceil(S.hp)} ♥`:`◈ ${S.profile==='explorador'?'EXPEDIÇÃO CIVIL':name} 3/3 | ${Math.ceil(S.hp)} ♥ · 2 aliados IA`;
   }
   const mapCircle=(ctx,x,y,r,col)=>{ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.fillStyle=col;ctx.fill()};
   function mapDraw(canvas){if(!S)return;const context=canvas.getContext('2d'),w=canvas.width,h=canvas.height;
@@ -105,7 +107,7 @@
     context.fillStyle='#267eb2';context.fillRect(0,cy-22*unit,w,9*unit);
     const color={food:'#f5d371',fish:'#44bfff',hunt:'#f5a16e',amulet:'#d99aff'};
     for(const item of S.items){if(item.done||item.type==='enemy')continue;mapCircle(context,cx+item.x*unit,cy-item.z*unit,Math.max(2,side*.012),color[item.type]);}
-    window.GuardianV14?.mapDraw(context,cx,cy,unit,side);window.TrailsV15?.mapDraw(context,cx,cy,unit,side);
+    window.GuardianV14?.mapDraw(context,cx,cy,unit,side);window.TrailsV15?.mapDraw(context,cx,cy,unit,side);window.FaunaV17?.mapDraw(context,cx,cy,unit,side);window.SurvivalV19?.mapDraw(context,cx,cy,unit,side);
     for(const e of S.enemy)if(e.hp>0)mapCircle(context,cx+e.x*unit,cy-e.z*unit,Math.max(2,side*.012),'#ff5359');
     for(const a of S.squad)mapCircle(context,cx+a.x*unit,cy-a.z*unit,3,'#e9f6ff');
     mapCircle(context,cx+S.x*unit,cy-S.z*unit,Math.max(4,side*.016),'#ffffff');
@@ -114,8 +116,9 @@
   }
   function drawMap(){mapDraw($('expMinimap'));if($('expFullMap').open)mapDraw($('expBigMap'));}
   function inventory(){if(!S)return;const a=getCounts();$('expInventoryContent').innerHTML=
-    `<div class="exp-inventory-counters"><div>🌿 Alimentos <b>${a.food}/5</b></div><div>🐟 Pesca <b>${a.fish}/2</b></div><div>🏹 Caçada fictícia <b>${a.hunt}/2</b></div><div>💎 Amuletos <b>${a.amulet}/3</b></div></div><p>🏆 Pontuação: <strong>${S.score}</strong> · Equipe: ${TA[S.tribe].name}</p><p>Ferramentas disponíveis: lança, arco, escudo e bolsa. Use os ícones da barra inferior.</p>${window.GuardianV14?.inventoryHTML()||''}<p>Os amuletos dos Guardiões são salvos por tribo e não são apagados ao reiniciar coletas.</p><button id="expRestart" class="secondary-btn">REINICIAR EXPEDIÇÃO E COLETAS</button>`;
-    $('expRestart').onclick=()=>{if(confirm('Reiniciar esta expedição? Pontuação e coletas locais serão apagadas.')){try{localStorage.removeItem(getSaveKey());}catch{}const opts={tribe:S.tribe,arena:S.arena,role:S.role};start(opts);$('expInventory').close();}};
+    `<div class="exp-inventory-counters"><div>🌿 Alimentos <b>${a.food}/5</b></div><div>🐟 Pesca <b>${a.fish}/2</b></div><div>${S.profile==='explorador'?'🔭 Registros de fauna':'🏹 Caçada fictícia'} <b>${a.hunt}/2</b></div><div>💎 Amuletos <b>${a.amulet}/3</b></div></div><p>🏆 Pontuação: <strong>${S.score}</strong> · Perfil: ${S.profile==='explorador'?'Explorador':'Guerreiro'} · Região: ${TA[S.arena].region}</p><p>Use os ícones da barra inferior para selecionar seu equipamento.</p>${window.AdventureV18?.inventoryHTML()||''}<p><button type="button" id="expInventoryMedical" class="secondary-btn">🧰 ABRIR KIT MÉDICO E BOTÂNICO</button></p>${window.GuardianV14?.inventoryHTML()||''}<div class="fauna-firstaid"><p>🌿 Kit de primeiros socorros: <b>${window.FaunaV17?.kits??0}</b> restantes. Recupera 45 de vida e remove efeitos temporários.</p><button type="button" id="expHeal" class="secondary-btn">🌿 USAR KIT</button></div><p>Os amuletos dos Guardiões são salvos por tribo e não são apagados ao reiniciar coletas.</p><button id="expRestart" class="secondary-btn">REINICIAR EXPEDIÇÃO E COLETAS</button>`;
+    $('expHeal').onclick=()=>window.FaunaV17?.heal();window.AdventureV18?.bindInventory();$('expInventoryMedical')?.addEventListener('click',()=>{ $('expInventory').close();window.SurvivalV19?.open();});
+    $('expRestart').onclick=()=>{if(confirm('Reiniciar esta expedição? Pontuação e coletas locais serão apagadas.')){try{localStorage.removeItem(getSaveKey());window.SurvivalV19?.resetCurrent();}catch{}const opts={tribe:S.tribe,arena:S.arena,role:S.role,profile:S.profile};start(opts);$('expInventory').close();}};
     $('expInventory').showModal();
   }
   // ─── Projection: simple third-person perspective of XYZ landscape
@@ -136,7 +139,7 @@
   }
   const colors={munduruku:['#e24232','#eebf4d','#af342c'],muirapinima:['#1e7edb','#e74953','#284fa0']};
   function drawChar(ctx,x,z,team,scale=1,isHero=false,phase=0){const foot=proj(x,0,z),head=proj(x,2.55*scale,z);if(!foot||!head||foot.d>58)return;
-    const t=colors[team],w=clamp(foot.s*.34*scale,6,160),h=clamp(foot.y-head.y,24,360);if(foot.x<-w*2||foot.x>cam.W+w*2)return;
+    const t=colors[team]||['#7c8254','#c4b78d','#40574b'],w=clamp(foot.s*.34*scale,6,160),h=clamp(foot.y-head.y,24,360);if(foot.x<-w*2||foot.x>cam.W+w*2)return;
     ctx.save();ctx.translate(foot.x,foot.y);
     ctx.fillStyle='#0006';ctx.beginPath();ctx.ellipse(0,2,w*.59,w*.16,0,0,Math.PI*2);ctx.fill();
     const yy=-h;
@@ -144,11 +147,11 @@
     ctx.fillStyle=t[0];ctx.fillRect(-w*.41,-h*.64,w*.82,h*.36);
     ctx.fillStyle='#c68658';ctx.fillRect(-w*.51,-h*.58,w*.16,h*.3);ctx.fillRect(w*.35,-h*.58,w*.16,h*.3);
     ctx.fillStyle='#ba7d53';ctx.beginPath();ctx.arc(0,-h*.76,w*.29,0,Math.PI*2);ctx.fill();
-    for(let j=-4;j<=4;j++){
+    for(let j=(team==='explorador'?0:-4);j<=(team==='explorador'?-1:4);j++){
       const angle=j/4,fx=Math.sin(angle*1.3)*w*.7;
       ctx.beginPath();ctx.moveTo(fx*.32,-h*.88);ctx.quadraticCurveTo(fx*1.17,-h*(1.10+Math.cos(angle*1.4)*.1),fx,-h*(1.21+Math.cos(angle)*.1));ctx.quadraticCurveTo(fx*.44,-h*1.02,fx*.32,-h*.88);ctx.fillStyle=t[Math.abs(j)%3];ctx.fill();
     }
-    ctx.fillStyle=t[1];ctx.fillRect(-w*.34,-h*.94,w*.68,h*.065);
+    ctx.fillStyle=t[1];ctx.fillRect(-w*.34,-h*.94,w*.68,h*.065);if(team==='explorador'){ctx.fillStyle='#4b5136';ctx.fillRect(-w*.40,-h*.91,w*.80,h*.08);ctx.fillRect(-w*.18,-h*.97,w*.36,h*.10);ctx.fillStyle='#3d4c43';ctx.fillRect(-w*.57,-h*.65,w*.22,h*.24);}
     if(isHero){ctx.strokeStyle='#fff8cd';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,-h*.56,w*.50,h*.36,0,0,Math.PI*2);ctx.stroke();}
     ctx.restore();
   }
@@ -185,11 +188,12 @@
     for(const b of (window.GuardianV14?.data?.bosses||[]))if(!window.GuardianV14.data.defeated.includes(b.id))sprites.push({x:b.x,z:b.z,draw:()=>window.GuardianV14.draw(ctx,b,proj,clamp)});
     for(const p of (window.TrailsV15?.POINTS||[]))sprites.push({x:p.x,z:p.z,draw:()=>window.TrailsV15.draw(ctx,p,proj,clamp)});
     for(const e of S.enemy)if(e.hp>0)sprites.push({x:e.x,z:e.z,draw:()=>drawChar(ctx,e.x,e.z,S.rival,.92)});
-    for(const a of (window.GuardianV14?.mode==='solo'?[]:S.squad))sprites.push({x:a.x,z:a.z,draw:()=>drawChar(ctx,a.x,a.z,S.tribe,.94)});
+    for(const a of (window.GuardianV14?.mode==='solo'?[]:S.squad))sprites.push({x:a.x,z:a.z,draw:()=>drawChar(ctx,a.x,a.z,S.profile==='explorador'?'explorador':S.tribe,.94)});
     for(const a of S.animals){if(S.items.find(i=>i.id===a.id).done)continue; sprites.push({x:a.x,z:a.z,draw:()=>{let p=proj(a.x,.25,a.z);if(!p)return;const r=clamp(p.s*.23,4,28);ctx.fillStyle='#9b7a4c';ctx.beginPath();ctx.ellipse(p.x,p.y,r*1.4,r*.70,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(p.x+r*.9,p.y-r*.3,r*.48,0,6.283);ctx.fill();}});}
-    sprites.push({x:S.x,z:S.z,draw:()=>drawChar(ctx,S.x,S.z,S.tribe,1.08,true)});
+    sprites.push({x:S.x,z:S.z,draw:()=>drawChar(ctx,S.x,S.z,S.profile==='explorador'?'explorador':S.tribe,1.08,true)});
     sprites.sort((a,b)=>{const pa=proj(a.x,0,a.z),pb=proj(b.x,0,b.z);return (pb?.d||0)-(pa?.d||0)});
     for(const o of sprites)o.draw();
+    window.FaunaV17?.draw2D(ctx,proj,clamp);window.SurvivalV19?.draw2D(ctx,proj,clamp);window.MythosV18?.render2D(ctx,W,H);
     if(S.hit>0){ctx.fillStyle='#f2353a35';ctx.fillRect(0,0,W,H);}
     const fog=ctx.createLinearGradient(0,0,0,H);fog.addColorStop(0,'#07101c36');fog.addColorStop(.75,'#09142500');fog.addColorStop(1,'#05101a70');ctx.fillStyle=fog;ctx.fillRect(0,0,W,H);
     ctx.restore();
@@ -221,7 +225,7 @@
   function openMap(){if(!S)return;$('expFullMap').showModal();drawMap();}
   $('expMapBtn').onclick=openMap;$('expCloseMap').onclick=()=>$('expFullMap').close();
   $('expCloseInventory').onclick=()=>$('expInventory').close();
-  function exit(){keys={};stopJoy();active=false;window.GuardianV14?.onClose();window.TrailsV15?.onClose();$('expInventory').close();$('expFullMap').close();window.BattleV13.home();}
+  function exit(){keys={};stopJoy();active=false;window.GuardianV14?.onClose();window.TrailsV15?.onClose();window.FaunaV17?.close();window.AdventureV18?.close();window.SurvivalV19?.close();window.MythosV18?.close();$('expInventory').close();$('expFullMap').close();window.BattleV13.home();}
   $('expLeave').onclick=exit;
-  window.Expedition={start,tick,render,notify,save,get active(){return active},set active(v){active=Boolean(v)}};
+  window.Expedition={start,tick,render,notify,save,refreshInventory:()=>{if(S&&$('expInventory').open){$('expInventory').close();inventory();}},getState:()=>active?S:null,get active(){return active},set active(v){active=Boolean(v)}};
 })();

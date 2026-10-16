@@ -1,0 +1,12 @@
+/* V1.6: sobreposição WebGL usa canvas independente; telas antigas continuam Canvas 2D. */
+#world3d {position:absolute;inset:0;width:100%;height:100%;display:none;pointer-events:none;z-index:1;}
+html.expedition-3d-active #world3d{display:block}
+html.expedition-3d-active #world{visibility:hidden}
+#app:has(.expedition-screen.active) .stage-vignette{z-index:2;opacity:.18;pointer-events:none}
+.exp-graphics-controls{position:absolute;z-index:5;top:195px;left:14px;pointer-events:auto;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.exp-graphics-controls span{color:#d4edd6;font-size:9px;font-weight:800;border:1px solid #aec79678;background:#0b2638db;padding:6px 7px;border-radius:7px}
+.exp-graphics-controls button{color:#ffe4ab;background:#152c35de;border:1px solid #d7b777aa;border-radius:8px;font-size:9px;min-height:30px;padding:6px 9px;font-weight:900}
+.exp-graphics-controls button:focus-visible{outline:2px solid #fff3b2;outline-offset:3px}
+@media(max-width:780px){.exp-graphics-controls{top:160px;left:8px}.exp-graphics-controls span{font-size:8px;padding:4px 6px}.exp-graphics-controls button{font-size:8px;min-height:26px;padding:4px 5px}}
+@media(max-width:450px){.exp-graphics-controls{top:153px}}
+@media(max-height:510px){.exp-graphics-controls{top:151px}}

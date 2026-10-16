@@ -1,5 +1,5 @@
-/* BATALHA MUNDURUKU VS MUIRAPINIMA — V1.4
- * Jogo independente com 3D poligonal projetado por software (Canvas 2D).
+/* BATALHA MUNDURUKU VS MUIRAPINIMA — V1.8
+ * Arena herdada em Canvas 2D; Expedição opcional com WebGL 3D.
  * Sem bibliotecas externas: funciona no GitHub Pages e offline depois do cache.
  * Todas as habilidades e confrontos são ficcionais.
  */
@@ -35,8 +35,9 @@
     }
     document.querySelector('.footer').style.display = (name==='play'||name==='expedition')?'none':'flex';
     if(window.Expedition)window.Expedition.active=name==='expedition';
+    if(name!=='expedition')window.Expedition3D?.deactivate();
   }
-  function setStatus(s) { $('statusLine').textContent = s; clearTimeout(statusTimeout); statusTimeout=setTimeout(()=>{ $('statusLine').textContent='Rotas da Floresta · V1.5'; },4500); }
+  function setStatus(s) { $('statusLine').textContent = s; clearTimeout(statusTimeout); statusTimeout=setTimeout(()=>{ $('statusLine').textContent='Kit de Sobrevivência e Rios · V1.9'; },4500); }
   function sound(kind) {
     if (!audioOn) return;
     try {
@@ -53,7 +54,7 @@
     } catch (_e) { /* navegadores podem bloquear áudio */ }
   }
   function announce(txt, time=.6){$('toast').textContent=txt;$('toast').classList.add('show');toastUntil=now+time;}
-  function selectMode(value){ mode=value; $('modeEyebrow').textContent=value==='festival'?'MODO DISPUTA FOLCLÓRICA':value==='expedition'?'MODO EXPEDIÇÃO / SOBREVIVÊNCIA':'MODO CONFRONTO DE FANTASIA';$('selectScreen').querySelector('h2').textContent=value==='festival'?'Prepare sua apresentação':value==='expedition'?'Escolha seu território e equipe':'Escolha seu guerreiro';updateSelection();showScreen('select');sound('select');}
+  function selectMode(value){ mode=value;document.getElementById('expEditionSelector').hidden=value!=='expedition';document.getElementById('selectScreen').classList.remove('explorer-choice'); $('modeEyebrow').textContent=value==='festival'?'MODO DISPUTA FOLCLÓRICA':value==='expedition'?'MODO EXPEDIÇÃO / SOBREVIVÊNCIA':'MODO CONFRONTO DE FANTASIA';$('selectScreen').querySelector('h2').textContent=value==='festival'?'Prepare sua apresentação':value==='expedition'?'Escolha seu território e equipe':'Escolha seu guerreiro';updateSelection();window.AdventureV18?.paintSelection();showScreen('select');sound('select');}
   function updateSelection(){
     document.querySelectorAll('[data-tribe]').forEach(e=>{const yes=e.dataset.tribe===tribe;e.classList.toggle('selected',yes);e.setAttribute('aria-pressed',String(yes));});
     document.querySelectorAll('[data-arena]').forEach(e=>e.classList.toggle('selected',e.dataset.arena===arena));
@@ -71,7 +72,7 @@
   $('muteBtn').onclick=()=>{audioOn=!audioOn;$('muteBtn').classList.toggle('muted',!audioOn);$('muteBtn').textContent=audioOn?'♫':'♪';setStatus(audioOn?'Som ativado':'Som desativado');};
 
   function startGame() {
-    if(mode==='expedition'){window.Expedition.start({tribe,arena,role:role.key});showScreen('expedition');sound('select');return;}
+    if(mode==='expedition'){window.Expedition.start({tribe,arena,role:role.key,profile:window.AdventureV18?.getSelection()||'guerreiro'});showScreen('expedition');sound('select');return;}
     const roster = [role,...ROLES.filter(r => r.key!==role.key)];
     const enemyRoster = [ROLES[1],ROLES[2],ROLES[0]];
     const player = {x:-2.0,hp:100,power:0,cd:0,attackTime:0,hitTime:0,defend:false,role:roster[0]};
@@ -372,7 +373,10 @@
   }
   function renderWorld(){
     if(W<2||H<2)return;
-    if(screen==='expedition'&&window.Expedition){window.Expedition.render(ctx,W,H,now);return;}
+    if(screen==='expedition'&&window.Expedition){
+      if(window.Expedition3D?.render(window.Expedition.getState()))return;
+      window.Expedition.render(ctx,W,H,now);return;
+    }
     const dark=arena==='munduruku';
     const gradient=ctx.createLinearGradient(0,0,0,H);
     if(dark){gradient.addColorStop(0,'#160e32');gradient.addColorStop(.46,'#642b38');gradient.addColorStop(1,'#15111b');}

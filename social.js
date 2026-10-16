@@ -48,7 +48,8 @@
       }}
       window.GuardianV14?.resetProfile();
       window.TrailsV15?.resetProfile();
-      try{for(const key of Object.keys(localStorage)){if(key.startsWith('batalha_expedicao_v13_'))localStorage.removeItem(key);}}catch{}
+      window.FaunaV17?.resetProfile();window.AdventureV18?.resetProfile();window.SurvivalV19?.resetProfile();
+      try{for(const key of Object.keys(localStorage)){if(key.startsWith('batalha_expedicao_v13_')||key.startsWith('batalha_expedicao_v18_explorador_'))localStorage.removeItem(key);}}catch{}
       for(const k of [nicknameKey,faveKey,teamKey,'batalha_best_festival','batalha_wins'])try{localStorage.removeItem(k);}catch{}
       player=null;localTeam={name:'Tribo dos Guardiões',captain:'tuxaua'};
       $('playerNick').value='';$('playerAge').value='';$('privacyAgree').checked=false;

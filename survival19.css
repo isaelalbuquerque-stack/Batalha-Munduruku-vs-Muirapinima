@@ -1,0 +1,19 @@
+/* V1.9 — Interface de campo e botânica, otimizada para Android/PWA. */
+.exp-med-btn{position:absolute;z-index:7;right:18px;top:442px;pointer-events:auto;border:1px solid #96cfaf;border-radius:9px;padding:8px 10px;font-size:10px;font-weight:900;background:linear-gradient(115deg,#244936,#19333c);color:#e0ffdf;box-shadow:0 4px 12px #0008}
+.exp-med-status{position:absolute;z-index:5;right:18px;top:480px;max-width:200px;pointer-events:none;padding:5px 8px;background:#18362cdc;border:1px solid #7bbf8f80;border-radius:7px;color:#c5f6d3;font:700 9px/1.3 system-ui}
+.exp-med-status[data-risk="active"]{background:#632c28e8;border-color:#f9aa5c;color:#fff0c8}
+.exp-botanic-hud{position:absolute;top:506px;right:18px;pointer-events:none;max-width:200px;padding:4px 7px;background:#152e32da;border-radius:6px;color:#c4dcb9;font:600 9px system-ui}
+.exp-med-dialog{width:min(740px,96vw);max-height:87dvh;overflow:auto;color:#edf5e4}
+.exp-med-dialog h3{color:#f8dca2;font-size:15px;margin:17px 0 8px}
+.exp-med-dialog>p{font-size:12px;line-height:1.45}
+.exp-med-alert{padding:10px;border:1px solid #6db6b0;background:#133d41;border-radius:10px;font-size:12px}
+.exp-med-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.exp-med-item{display:flex;flex-direction:column;align-items:flex-start;position:relative;min-height:92px;padding:10px;border-radius:10px;text-align:left;background:#183c36;border:1px solid #7ba4957b;color:#ebf5dd;touch-action:manipulation}
+.exp-med-item b{font-size:12px;padding-right:24px}.exp-med-item small{font-size:10px;color:#c1d7cc;line-height:1.35;margin-top:3px}.exp-med-symbol{font-size:22px}.exp-med-item em{position:absolute;right:8px;top:8px;color:#ffe7ac;font-style:normal;font-weight:800}
+.exp-med-materials{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.exp-med-material{display:flex;justify-content:space-between;gap:8px;padding:9px 6px;border-bottom:1px solid #ffffff29;font-size:11px}.exp-med-material b{color:#ffe4a2}
+.exp-med-recipes{display:flex;flex-direction:column;gap:8px}.exp-med-craft{padding:10px;border:1px solid #91ac89;background:#254037;color:#eef6e0;display:flex;flex-direction:column;gap:4px;text-align:left;border-radius:9px}.exp-med-craft b{font-size:12px}.exp-med-craft small{font-size:10px;color:#f5dba2}.exp-med-craft span{font-size:10px}.exp-med-craft:disabled{opacity:.48}
+.exp-med-quest{border:1px solid #c4a66c;background:#314333;padding:9px;border-radius:10px;margin-top:15px}.exp-med-quest p{font-size:11px;line-height:1.5}.exp-med-quest strong{font-size:12px;color:#fce6a1}
+.exp-med-disclaimer{color:#f0dcb1;font-size:11px;line-height:1.5;margin:14px 0!important}
+@media(max-width:780px){.exp-med-btn{right:7px;top:388px;font-size:8px;padding:6px 7px}.exp-med-status{right:7px;top:419px;max-width:130px;font-size:8px}.exp-botanic-hud{right:7px;top:457px;max-width:130px;font-size:8px}}
+@media(max-width:450px){.exp-med-btn{top:374px}.exp-med-status{top:405px}.exp-botanic-hud{top:443px}.exp-med-item{min-height:98px}}
+@media(max-height:520px){.exp-med-btn{top:321px}.exp-med-status{top:353px}.exp-botanic-hud{top:382px}}

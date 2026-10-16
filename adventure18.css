@@ -1,0 +1,38 @@
+/* V1.8 — seleção de personagens, mochila e HUD compacto */
+.exp-edition-selector{margin:15px auto 10px;max-width:900px;padding:13px;border:1px solid #b8955877;background:linear-gradient(115deg,#142635ed,#1b2a25e9);border-radius:15px}
+.exp-edition-selector[hidden]{display:none!important}
+.exp-choice-label{color:#f6d49b;font-size:11px;letter-spacing:.09em;font-weight:900;margin-bottom:10px}
+.exp-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.exp-choice-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;border:1px solid #b5a47899;background:#142636;padding:12px;text-align:left;border-radius:12px;color:#e9e4d2;min-height:103px}
+.exp-choice-card.selected{border:2px solid #ffcf6a;background:#35402c;box-shadow:0 0 0 2px #e5a84b25}
+.exp-choice-card strong{font-size:12px;color:#ffe0a5}.exp-choice-card small{font-size:10px;color:#c6d4c7;line-height:1.35}
+.exp-choice-icon{font-size:25px}.exp-choice-note{font-size:11px;color:#b3cfc6;line-height:1.45;margin:10px 0 0}
+.exp-profile-hud{position:absolute;left:14px;top:278px;z-index:5;padding:7px 9px;background:#0d2231d9;border:1px solid #b7a56d7a;border-radius:10px;display:flex;flex-direction:column;gap:3px;color:#fae6be;pointer-events:none;font-size:10px}
+.exp-profile-hud b{font-size:10px}.exp-profile-hud span{color:#bde4d2;display:flex;gap:9px}.exp-profile-hud small{font-size:8px;color:#9fc3d3}
+.exp-gear-btn,.exp-mythos-btn{position:absolute;z-index:5;right:18px;pointer-events:auto;border:1px solid #ceae77;border-radius:9px;padding:8px 10px;font-size:10px;font-weight:900;background:linear-gradient(115deg,#183d3b,#213044);color:#fae0ab;box-shadow:0 4px 12px #0008}
+.exp-gear-btn{top:362px}.exp-mythos-btn{top:402px;border-color:#b5c1d0;background:linear-gradient(115deg,#353d59,#1b3141)}
+.exp-gear-dialog{width:min(610px,95vw)}.exp-gear-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.exp-gear-item{min-height:95px;padding:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:#163335;border:1px solid #9eb59b88;border-radius:10px;color:#ffedc0;touch-action:manipulation}
+.exp-gear-item strong{font-size:25px}.exp-gear-item span{font-size:11px;font-weight:700}.exp-gear-item small{color:#aadbb5}
+.exp-gear-summary{padding:10px;border:1px solid #bda76e;background:#1a302c;border-radius:11px;margin:8px 0;font-size:12px}.exp-gear-summary button{width:100%;margin-top:5px}
+.exp-gear-symbol{font-size:23px;line-height:1.4;display:inline-block;height:32px}
+.exp-mythos-dialog{width:min(570px,94vw)}.exp-mythos-dialog strong{color:#f1d39a}.exp-mythos-dialog button{margin:5px 0;width:100%}
+@media(max-width:780px){.exp-profile-hud{left:8px;top:215px;font-size:8px;padding:6px}.exp-gear-btn,.exp-mythos-btn{right:7px;font-size:8px;padding:6px 7px}.exp-gear-btn{top:326px}.exp-mythos-btn{top:358px}.exp-choice-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:450px){.exp-choice-card{padding:8px;min-height:118px}.exp-choice-card strong{font-size:10px}.exp-choice-card small{font-size:9px}.exp-profile-hud{top:212px}.exp-gear-btn{top:314px}.exp-mythos-btn{top:343px}}
+@media(max-height:520px){.exp-profile-hud{top:184px}.exp-gear-btn{top:257px}.exp-mythos-btn{top:285px}}
+.expedition-screen.active .exp-dialog{pointer-events:auto}
+
+/* Escolha neutra para quem não deseja interpretar personagem indígena. */
+.choose-screen.explorer-choice .tribe-grid{display:none!important}
+.choose-screen.explorer-choice .select-bottom .row-label:first-child,
+.choose-screen.explorer-choice .select-bottom .roles{display:none!important}
+.choose-screen.explorer-choice .exp-edition-selector{border-color:#a5bdb4}
+@media(max-width:780px){
+ .exp-survival{top:187px!important}
+ .exp-profile-hud{top:231px!important}
+ .exp-graphics-controls{top:150px!important}
+}
+@media(max-height:520px){
+ .exp-survival{top:164px!important}
+ .exp-profile-hud{top:194px!important}
+}

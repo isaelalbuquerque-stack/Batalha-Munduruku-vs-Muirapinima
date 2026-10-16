@@ -1,61 +1,69 @@
-# Batalha Munduruku vs Muirapinima — V1.5 · Rotas da Floresta
+# Batalha Munduruku vs. Muirapinima — V1.9
 
-**Protótipo independente, não oficial**, inspirado na rivalidade artística do Festribal Jurutiense. As tribos do festival e os povos indígenas não devem ser confundidos; as lutas e habilidades sobrenaturais são **ficção de jogo**, e não documentação de tradições indígenas. Diferentes lendas brasileiras e amazônicas foram reunidas para a aventura; Jurupari tem significados específicos em diferentes tradições indígenas e não é representado aqui como divindade ou vilão de uma comunidade real. Para publicação oficial/comercial, consulte especialistas e representantes culturais locais sobre personagens, indumentárias, símbolos e nomes.
+## KIT DE SOBREVIVÊNCIA, BOTÂNICA E FAUNA DOS RIOS
 
-## Novidades da V1.5 — Rotas da Floresta
+Atualização incremental da V1.8. Mantém os perfis Guerreiro/Guerreira e Explorador/Exploradora, o modo Expedição 3D WebGL com fallback Canvas 2D, 4 rotas, 5 Guardiões, modo em equipe com IA, progressão e clima de Tupã. As novas regras de sobrevivência são fictícias; o jogo é independente e não representa tratamentos reais ou práticas oficiais dos povos indígenas.
 
-- **Quatro novos locais para encontrar a pé**, usando o joystick e a câmera: Acampamento do Igarapé, Mirante da Várzea, Clareira da Sumaúma e Trilha das Serras.
-- **Pontos luminosos no cenário e no mapa**, mais marcador de destino, seta direcional e distância em metros de jogo.
-- **Novo botão ROTAS** que abre um painel interativo: selecione qual local deseja rastrear, veja distâncias, desafios concluídos e recompensas.
-- **Experiência e pontos por descoberta**: 90, 130, 170 e 220 XP (somente uma vez por tribo e arena), com progresso salvo localmente, sem depender da internet.
-- **Correção da missão de abastecimento**: progresso de conclusão é preservado para evitar repetir a recompensa ao reiniciar o jogo.
-- Preservados todos os recursos anteriores da V1.4, incluindo os cinco Guardiões e os duelos simplificados online quando configurados.
+### Novidade 1 — Kit médico acessível durante a Expedição
 
-**Importante**: ainda é um protótipo com personagens estilizados e projeção Canvas 2D, não um jogo fotorrealista 3D. O combate 3x3 via rede não foi implementado. Esta entrega dá novos objetivos à exploração livre, preparando a migração futura para um motor 3D real.
+- Novo botão fixo **🧰 KIT MÉDICO** na lateral direita. A bolsa do inventário também abre o mesmo painel.
+- **Soro antiofídico do jogo**: para picada de cobra peçonhenta identificada; o jogador é evacuado automaticamente ao **posto de saúde fictício** (não se autoaplica soro), com consumo de uma dose.
+- **Soro antiaracnídico do jogo**: atendimento simulado de acidentes de aranha/escorpião, seguindo as mesmas regras de resgate.
+- **Rádio de resgate**: retorno rápido ao acampamento e assistência de NPC do jogo, inclusive para ferroadas e acidentes aquáticos.
+- **Repelente fictício**: afasta encontros de mosquitos e carrapatos por 90 segundos jogáveis.
+- **Bálsamo de conforto, curativo e compressa anestésica de fantasia**: alívio limitado de efeitos simulados; **não são antídotos**.
+- Status de ferimentos temporários no HUD. Tratamentos corretos têm impacto no estoque e na sobrevivência; ferimentos causam redução de vida/energia, com retorno ao acampamento se a vida zerar.
 
-## Recursos herdados da V1.4
+### Novidade 2 — Plantas coletáveis e bancada de criação
 
+O mapa 3D, o minimapa e o fallback 2D têm **16 pontos de coleta** distribuídos em quatro grupos:
 
-- **Cinco Guardiões de fantasia acessíveis na Expedição**: Saci, Curupira, Matinta Perera, Mapinguari e Jurupari.
-- Cada um possui **posição fixa no mapa**, barra de vida, ataques, dificuldade, desbloqueios e recompensas próprias.
-- **Progressão com XP e níveis** (1–30), salva localmente **por tribo**. Recolher alimentos, pescar, realizar caça fictícia, enfrentar adversários, concluir a missão de abastecimento e descobrir rotas concedem XP; vencer Guardiões também.
-- **Escolha de formação**: equipe com dois aliados IA (requisitos de nível menores, redução de dano) ou desafio individual (níveis maiores, sem aliados na arena).
-- **Sequência de provas**: Saci → Curupira → Matinta Perera → Mapinguari → Jurupari. Não é possível atacar Guardiões bloqueados; ao se aproximar, o HUD mostra o requisito.
-- **Amuletos exclusivos de cada Guardião** adicionam bônus permanente de poder após vitória, consultáveis no catálogo e na mochila.
-- **Painel de Guardiões** acessível pelo menu inicial ou durante a expedição, com ações para marcar o destino no mapa ou reiniciar somente a progressão dos Guardiões.
-- **Galeria de escolha de tribos atualizada** com os personagens humanos em imagens realistas previamente aprovadas. A arte é estática, não um personagem 3D animado.
-- Mantidas as modalidades **Disputa Folclórica**, **Confronto** e **Expedição** da V1.3 e as salas online de duelos da versão anterior (quando configuradas).
+1. Folhagem aromática 🌿 — elemento do repelente fictício.
+2. Resina da mata 🌳 — recurso genérico inspirado em árvores amazônicas, **sem alegação clínica**.
+3. Folhas calmantes 🍃 — material para bálsamo de jogo.
+4. Jambu encantado 🌸 — referência cultural ao jambu; a compressa anestésica é uma mecânica de fantasia, não orientação medicinal.
 
-## Guardiões e requisitos
+Aproxime-se até 3,6 unidades e pressione **COLETAR**. A coleta rende 25 XP, o objeto some do mundo e o recurso vai para a mochila. O botão **KIT MÉDICO** abre a bancada: combine itens **apenas no sistema de jogo**, consumindo inventário para obter repelente, bálsamo ou compressa. Ingredientes do mundo real NÃO devem ser preparados com base nessas receitas fictícias.
 
-| Guardião | Vida | Dano | Nível com equipe | Nível solo | Recompensa | XP |
-|---|---:|---:|---:|---:|---|---:|
-| Saci | 100 | 7 | 1 | 3 | Amuleto do Vento (+6 poder) | 180 |
-| Curupira | 160 | 9 | 3 | 5 | Amuleto das Trilhas (+10 poder) | 260 |
-| Matinta Perera | 220 | 12 | 5 | 8 | Amuleto da Noite (+14 poder) | 360 |
-| Mapinguari | 330 | 17 | 8 | 12 | Amuleto da Força (+20 poder) | 520 |
-| Jurupari | 430 | 20 | 11 | 16 | Amuleto da Visão (+30 poder) | 750 |
+### Novidade 3 — Rios e fauna ampliada
 
-O jogo também exige vencer o Guardião anterior. Os pontos de vida e de dano são valores **fictícios de balanceamento**. Nível = 1 + parte inteira de (XP ÷ 160), limitado a 30. No modo equipe, dois aliados IA entram na expedição. O solo é um desafio opcional mais exigente.
+O Bestiário passou de **21 para 30 encontros**, com nove novos registros:
 
-## Controles
+- **Poraquê/puraquê (peixe-elétrico)**, com descarga fictícia;
+- **Cobra-d’água**, sem tratá-la automaticamente como peçonhenta;
+- **Insetos aquáticos** (percevejos d’água);
+- **Arraia de água doce**;
+- **Marimbondos**;
+- **Cabas**, nome regional de vespas;
+- **Mosquitos/pernilongos**;
+- **Carrapatos**;
+- **Formiga tocandira**.
 
-**Celular:** joystick esquerdo = mover; deslizar no fundo = girar câmera; COLETAR = recursos e pescaria; CONFRONTO = ataque com lança/arco; EQUIPE = seguir/defender; GUARDIÕES = catálogo e modo equipe/solo; MAPA = minimapa ampliado; BOLSA = inventário. Próximo a um Guardião, aproxime-se com a lança ou utilize o alcance maior do arco. Ferramentas são de fantasia de jogo.
+O **cardume de piranhas** continua no rio desde a V1.7. Os novos animais possuem marcadores no mapa, modelos geométricos 3D básicos, aparição no modo Canvas 2D, descoberta e recompensa de XP. Os encontros perigosos afugentam-se e não são abatidos. Risco e agressividade são simplificações de videogame.
 
-**Computador:** WASD/setas = movimento; Q/R = virar câmera; Shift = correr; F ou espaço = coleta; J = confronto; E = comandar equipe; I = bolsa; M = mapa; Esc = sair.
+### Novidade 4 — Missão do Botânico e dos Rios
 
-## Estrutura e instalação
+Explore em qualquer perfil de Expedição; registre os **4 tipos de plantas**, fabrique **1 repelente** e descubra **1 poraquê**. A conclusão libera **300 XP uma única vez por perfil/tribo/arena**. A missão coexistirá com a missão tradicional de abastecimento, sem apagá-la.
 
-O ZIP está preparado para **GitHub Pages**, com arquivos na raiz, `index.html`, CSS/JavaScript, imagens `.webp`, `manifest.webmanifest` e `sw.js` com cache V1.5. Não exige ferramentas de compilação nem dependências JavaScript para o modo offline.
+### Salvamento
 
-**Importante:** se você já configurou o Supabase em um repositório, preserve seu `config.js` ao enviar esta versão; o arquivo do ZIP vem com placeholders para evitar publicar credenciais. Nunca coloque a chave `service_role` no frontend. O multiplayer 3v3 em mundo aberto NÃO está implementado; o online atual, se configurado, é um duelo simplificado 1v1 entre dois aparelhos.
+Todos os recursos, coletas, tempo restante de repelente e progresso botânico são salvos no armazenamento local com a chave `batalha_sobrevivencia_v19_PERFIL_TRIBO_ARENA`. O progresso da V1.8 e versões anteriores não é sobrescrito. Quando reiniciar a expedição e as coletas pelo menu, o estoque de plantas V1.9 também recomeçará. O cadastro excluído remove os dados locais do módulo V1.9.
 
-## Qualidade gráfica e limitações
+### Aviso importante
 
-Este **não é um jogo com avatares 3D realistas como PUBG**. O protótipo da Expedição usa projeção 3D feita em **Canvas 2D**, silhuetas estilizadas para os Guardiões e figuras básicas em movimento. As imagens aprovadas e realistas são usadas nas telas de seleção, não como malhas 3D. Converter personagens e mapas em humanos e ambientes fotorrealistas navegáveis requer um motor 3D/WebGL com malhas, rigging, animações, iluminação e otimização mobile, a desenvolver em próximas versões. As áreas chamadas “sagradas” e os amuletos são cenários ficcionais; nenhuma prática religiosa real é simulada.
+**Este jogo não orienta tratamento de envenenamento, picadas ou alergias.** Na vida real, antivenenos dependem da indicação e supervisão médica; plantas, receitas caseiras e repelentes caseiros não substituem assistência. Se houver suspeita de acidente por animal peçonhento, procure atendimento médico, não tente fabricar soro ou tratar por conta própria.
 
-## Privacidade e segurança
+Fontes de contexto: Ministério da Saúde — [tratamento de acidentes ofídicos](https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos/acidentes-ofidicos/tratamento) e [tratamentos caseiros](https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/a/animais-peconhentos/acidentes-ofidicos/faq/faq/tratamentos-caseiros-funcionam).
 
-Cadastro por apelido, idade autodeclarada e tribo. A idade fica somente na sessão e não é enviada ao servidor. XP, recompensas e coletas ficam no armazenamento **local** e podem ser reiniciados. Menores de 18 anos ficam restritos a recursos offline nesta etapa, mas essa regra é baseada em autodeclaração, não em verificação robusta de idade. Antes de publicar para o público geral, complete o aviso de privacidade e revise medidas exigidas por LGPD e regras de proteção a crianças e adolescentes.
+### Instalação
 
-Consulte `INSTRUCOES_GITHUB.md` para instalar esta atualização.
+1. Faça backup de `config.js`, repositório e progresso do aparelho.
+2. Extraia o ZIP e **envie todos os arquivos e a pasta `assets/` para a raiz do GitHub Pages**, substituindo os arquivos da V1.8. Inclua especialmente `survival19.js` e `survival19.css`.
+3. O cache offline passa para `batalha-tribos-v1-9-0`. Após o upload, atualize a página, feche e abra o PWA para usar a nova versão.
+4. Abra **EXPEDIÇÃO → Guerreiro ou Explorador → COMEÇAR** e use **🧰 KIT MÉDICO**. Confira `TESTES_V1.9.md`.
+
+### Limitações conhecidas
+
+- Esta entrega implementa sistemas jogáveis e **modelos geométricos 3D**, não criaturas cinematográficas fotorrealistas no nível PUBG.
+- O mundo aberto continua uma sessão offline local, não multiplayer em tempo real.
+- O inventário fica no dispositivo atual, sem sincronização online da progressão.

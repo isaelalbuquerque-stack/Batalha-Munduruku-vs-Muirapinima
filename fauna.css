@@ -1,0 +1,25 @@
+/* V1.7 · HUD compacto de ameaças, vida e bestiário sem ocultar o joystick */
+.exp-fauna{position:absolute;z-index:5;right:18px;top:273px;border:1px solid #e5ab79;border-radius:9px;padding:9px 12px;background:linear-gradient(105deg,#39251c,#192c32);color:#ffe8be;font-size:11px;font-weight:900;pointer-events:auto;box-shadow:0 5px 16px #000a}
+.exp-fauna small{margin-left:8px;color:#ffe9a4}
+.exp-fauna-alert{position:absolute;z-index:5;right:18px;top:318px;max-width:min(300px,44vw);background:#40222af2;border:1px solid #ef8e7b;color:#ffe9cc;border-radius:9px;padding:8px 11px;font-size:11px;font-weight:800;pointer-events:none;text-shadow:0 1px 3px #000}
+.exp-fauna-alert[data-danger="low"]{background:#1c3d39e8;border-color:#7adeb6}
+.exp-fauna-alert[hidden]{display:none}
+.exp-survival{position:absolute;z-index:5;left:14px;top:239px;width:170px;border:1px solid #e2b7797a;border-radius:9px;padding:7px 9px;background:#101b29d9;color:#ffded2;font-weight:900;font-size:10px;pointer-events:none}
+.exp-survival-track{height:7px;border-radius:12px;background:#582c36;overflow:hidden;margin-top:5px}
+.exp-survival-track i{height:100%;display:block;background:linear-gradient(90deg,#c63838,#e89763);transition:width .25s}
+.exp-fauna-dialog{width:min(800px,95vw);max-width:800px;max-height:90svh;z-index:100}
+.exp-fauna-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:14px 0}
+.fauna-card{display:flex;align-items:flex-start;gap:12px;padding:11px;background:#172b34;border:1px solid #936f53;border-radius:12px}
+.fauna-card.unknown{opacity:.72}
+.fauna-icon{font-size:28px;min-width:37px;height:40px;display:grid;place-items:center;background:#0d2534;border-radius:8px}
+.fauna-card strong{display:block;font-size:14px;color:#f5d59d}
+.fauna-card small{display:block;font-size:10px;margin:4px 0;color:#d3c8ad}
+.fauna-card p{font-size:11px;margin:6px 0;line-height:1.4}
+.fauna-card span{font-size:10px;color:#91d8b1;font-weight:900}
+.fauna-firstaid{background:#13352b;border:1px solid #91bf9b;border-radius:9px;padding:10px;margin:10px 0}
+.fauna-firstaid .secondary-btn{width:100%}
+@media(max-width:780px){.exp-fauna{top:250px;right:7px;font-size:9px;padding:7px}.exp-fauna-alert{top:285px;right:7px;font-size:9px;max-width:48vw;padding:6px}.exp-survival{top:175px;left:8px;width:128px;padding:5px;font-size:9px}}
+@media(max-width:450px){.exp-fauna{top:225px}.exp-fauna-alert{top:260px;font-size:8px}.exp-survival{top:173px}.exp-fauna-cards{grid-template-columns:1fr}}
+@media(max-height:520px){.exp-fauna{top:216px}.exp-fauna-alert{top:249px}.exp-survival{top:150px;left:8px;width:116px}}
+/* Dialogs ficam em top-layer, mas a tela de exploração usa pointer-events:none. */
+.expedition-screen.active .exp-dialog{pointer-events:auto}
