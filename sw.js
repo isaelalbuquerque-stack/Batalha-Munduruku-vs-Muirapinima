@@ -1,15 +1,5 @@
-const CACHE = 'batalha-tribos-v1-9-0';
-const CORE = ['./','./index.html','./styles.css','./game.js','./social.js','./config.js','./privacidade.html','./manifest.webmanifest','./icon.svg','./favicon.png','./icon-192.png','./icon-512.png','./logo-oficial.webp','./arte-munduruku.webp','./arte-muirapinima.webp','./exploration.js','./expedition.css','./guardians.js','./guardians.css','./trails.js','./trails.css','./expedition3d.js','./expedition3d.css','./fauna.js','./fauna.css','./adventure18.js','./adventure18.css','./mythos18.js','./survival19.js','./survival19.css','./assets/avatar-realista-munduruku.webp','./assets/avatar-realista-muirapinima.webp','./assets/universo-munduruku.webp','./assets/aldeia-muirapinima.webp','./assets/lança.webp','./assets/arco.webp','./assets/flechas.webp','./assets/escudo.webp','./assets/tocha.webp','./assets/machado.webp','./assets/corda.webp','./assets/tambor.webp','./assets/maraca.webp','./assets/bolsa.webp'];
-self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
-});
-self.addEventListener('activate', event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith('batalha-tribos-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
-});
-self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
-  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
-    if (response.ok) { const copy = response.clone(); caches.open(CACHE).then(c => c.put(event.request, copy)); }
-    return response;
-  })));
-});
+const CACHE='batalha-v21-demo-20261018-1';
+const FILES=['./','./index.html','./app.js','./styles.css','./data/catalog.js','./assets/arsenal.svg','./assets/bestiario.svg','./assets/icon.svg','./assets/icon-192.png','./assets/icon-512.png','./assets/logo-aprovado.webp','./manifest.webmanifest'];
+self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('batalha-v21-demo-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET'||new URL(req.url).origin!==self.location.origin)return;event.respondWith(caches.match(req).then(hit=>hit||fetch(req).then(res=>{if(res.ok){const clone=res.clone();caches.open(CACHE).then(cache=>cache.put(req,clone))}return res})))})

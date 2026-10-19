@@ -1,23 +1,22 @@
 {
-  "id": "./",
-  "name": "Batalha Munduruku vs Muirapinima",
-  "short_name": "Batalha Tribos",
-  "description": "Batalha Munduruku vs. Muirapinima V1.9 — Expedição 3D, kit médico, botânica, poraquês, cobras d’água e insetos.",
+  "name": "Batalha Munduruku vs Muirapinima — Prévia V2.1",
+  "short_name": "Batalha V2.1",
+  "description": "Prévia jogável independente da atualização Guardiões da Floresta",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#0b1425",
-  "theme_color": "#0b1425",
+  "background_color": "#101713",
+  "theme_color": "#101713",
   "icons": [
     {
-      "src": "./icon-192.png",
+      "src": "assets/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "./icon-512.png",
+      "src": "assets/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

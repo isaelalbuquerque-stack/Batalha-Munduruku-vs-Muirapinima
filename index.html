@@ -1,180 +1,33 @@
 <!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
-  <meta name="theme-color" content="#0b1425">
-  <meta name="description" content="Jogo independente inspirado no Festribal de Juruti. Duas tribos, disputa folclórica, confrontos fictícios e expedição 3D WebGL.">
-  <meta name="application-name" content="Batalha Munduruku vs Muirapinima">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta property="og:title" content="Batalha Munduruku vs Muirapinima">
-  <meta property="og:description" content="O duelo das tribos em duas modalidades — ritmo e confronto.">
-  <meta property="og:image" content="./logo-oficial.webp">
-  <link rel="icon" type="image/png" href="./favicon.png">
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="stylesheet" href="./styles.css">
-  <link rel="stylesheet" href="./expedition.css"><link rel="stylesheet" href="./guardians.css"><link rel="stylesheet" href="./trails.css">
-  <link rel="stylesheet" href="./expedition3d.css"><link rel="stylesheet" href="./fauna.css"><link rel="stylesheet" href="./adventure18.css"><link rel="stylesheet" href="./survival19.css">
-  <title>Batalha Munduruku vs Muirapinima</title>
-</head>
-<body>
-<div id="app">
-  <div class="stage" id="stage"><canvas id="world" aria-label="Arena de duelos e fallback da Expedição"></canvas><canvas id="world3d" aria-label="Mundo 3D WebGL navegável na Expedição"></canvas><div class="stage-vignette"></div></div>
-  <header class="topbar">
-    <div class="brand"><img class="brand-symbol" src="./favicon.png" alt="Cocar do jogo" width="40" height="40"><div class="brand-name">BATALHA <strong>MUNDURUKU <em>VS</em> MUIRAPINIMA</strong></div></div>
-    <div class="top-actions"><span class="edition">V1.9 · SOBREVIVÊNCIA E RIOS</span><button id="accountBtn" class="icon-button account-icon" title="Meu cadastro" aria-label="Meu cadastro">♙</button><button id="muteBtn" class="icon-button" title="Ativar/desativar som" aria-label="Ativar ou desativar som">♫</button></div>
-  </header>
-  <main>
-    <section id="homeScreen" class="screen home-screen active">
-      <div class="hero-tag"><span class="ornament-dot">◆</span> INSPIRADO NO FESTRIBAL JURUTIENSE <span class="ornament-dot">◆</span></div>
-      <div class="hero-brand"><img class="hero-logo" src="./logo-oficial.webp" alt="Logo Batalha Munduruku vs Muirapinima com cocar amarelo e vermelho à esquerda, azul e vermelho à direita e penas vermelhas no centro" width="1050" height="1050" fetchpriority="high"></div>
-      <h1 class="visually-hidden">Batalha Munduruku vs Muirapinima</h1>
-      <p class="hero-text">Duas tribos. Duas arenas. <strong>Um mundo para explorar.</strong></p>
-      <div id="playerWelcome" class="player-welcome" aria-live="polite">Cadastre seu apelido para começar.</div>
-      <div class="tribe-counters" aria-live="polite">
-        <div><span class="counter-red">✦</span><small>MUNDURUKU</small><strong id="countMunduruku">—</strong></div>
-        <span class="counter-vs">VS</span>
-        <div><span class="counter-blue">✦</span><small>MUIRAPINIMA</small><strong id="countMuirapinima">—</strong></div>
-      </div>
-      <div class="counts-caption" id="counterNote">Cadastros online por tribo • conectar Supabase para exibir</div>
-      <div class="mode-grid">
-        <button id="festivalMode" class="mode-card festival-card">
-          <span class="mode-icon">♫</span><span class="mode-body"><span class="mode-kicker">MODALIDADE 01</span><strong>DISPUTA FOLCLÓRICA</strong><small>Ritmo, coreografia e jurados</small></span><span class="mode-arrow">➜</span>
-        </button>
-        <button id="duelMode" class="mode-card duel-card">
-          <span class="mode-icon">⚔</span><span class="mode-body"><span class="mode-kicker">MODALIDADE 02</span><strong>CONFRONTO DAS TRIBOS</strong><small>Combos e poderes de fantasia</small></span><span class="mode-arrow">➜</span>
-        </button>
-        <button id="expeditionMode" class="mode-card expedition-card"><span class="mode-icon">◈</span><span class="mode-body"><span class="mode-kicker">MODALIDADE 03 · OFFLINE</span><strong>EXPEDIÇÃO: MUNDO ABERTO 3D</strong><small>Explore como guerreiro ou explorador, com kit médico, botânica, rios, tempestades e Guardiões</small></span><span class="mode-arrow">➜</span></button>
-      </div>
-      <div class="extra-modes"><button id="guardianGuide" class="secondary-btn">✦ CONHECER OS GUARDIÕES</button><button id="teamsBtn" class="secondary-btn">♟ MONTAR MINHA EQUIPE</button><button id="onlineBtn" class="secondary-btn">◉ JOGAR ONLINE</button></div>
-      <p class="disclaimer">Projeto independente, sem vínculo oficial com o Festribal ou com comunidades indígenas. Personagens e poderes de fantasia são ficcionais.</p>
-    </section>
-    <section id="selectScreen" class="screen choose-screen" aria-hidden="true">
-      <div class="screen-head"><button id="backSelect" class="ghost-btn">‹ Voltar</button><div><div class="eyebrow" id="modeEyebrow">ESCOLHA SUA TRIBO</div><h2>Prepare sua apresentação</h2></div></div>
-      <div class="tribe-grid">
-        <button class="tribe-card selected" data-tribe="munduruku" aria-pressed="true">
-          <span class="tribe-crown" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><img class="tribe-art" alt="" src="./assets/avatar-realista-munduruku.webp">
-          <strong>MUNDURUKU</strong><span>Vermelho & amarelo</span><small>Universo Munduruku</small>
-        </button>
-        <button class="tribe-card tribe-mui" data-tribe="muirapinima" aria-pressed="false">
-          <span class="tribe-crown" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><img class="tribe-art" alt="" src="./assets/avatar-realista-muirapinima.webp">
-          <strong>MUIRAPINIMA</strong><span>Azul & vermelho</span><small>Aldeia Muirapinima</small>
-        </button>
-      </div>
-      <div id="expEditionSelector" class="exp-edition-selector" hidden>
-        <div class="exp-choice-label">TIPO DE PERSONAGEM · EXPEDIÇÃO 3D</div>
-        <div class="exp-choice-grid" role="group" aria-label="Escolha o tipo de personagem para a Expedição">
-          <button type="button" class="exp-choice-card selected" data-adventure-profile="guerreiro" aria-pressed="true"><span class="exp-choice-icon">🏹</span><strong>GUERREIRO / GUERREIRA</strong><small>Equipamentos de fantasia, equipe e história do universo tribal</small></button>
-          <button type="button" class="exp-choice-card" data-adventure-profile="explorador" aria-pressed="false"><span class="exp-choice-icon">🧭</span><strong>EXPLORADOR / EXPLORADORA</strong><small>Roupa de campo, mochila, cantil, kit médico e arsenal fictício</small></button>
-        </div><p class="exp-choice-note">O explorador é um personagem independente: escolher o território não significa pertencer a um povo indígena.</p>
-      </div>
-      <div class="select-bottom"><div class="row-label">PERSONAGEM <small>escolha um perfil</small></div><div class="roles" id="roles"></div>
-        <div class="row-label">ARENA <small>local da apresentação</small></div><div class="arena-switch"><button class="arena-btn selected" data-arena="munduruku">☀ Universo Munduruku</button><button class="arena-btn" data-arena="muirapinima">✦ Aldeia Muirapinima</button></div>
-        <button id="startBtn" class="primary-btn">COMEÇAR <span>➜</span></button></div>
-    </section>
-    <section id="playScreen" class="screen play-screen" aria-hidden="true">
-      <div class="play-hud"><div class="combatant"><div class="identity"><span id="playerLabel">Munduruku</span><b>VOCÊ</b></div><div class="bar-back"><div class="bar-fill" id="playerBar"></div></div><div class="mini-stat" id="playerStat">0 pontos</div></div>
-      <div class="middle-hud"><div id="roundLabel">RODADA 1</div><strong id="timerLabel">00:25</strong><small id="actLabel">CANTO & DANÇA</small></div>
-      <div class="combatant enemy"><div class="identity"><span id="cpuLabel">Muirapinima</span><b>CPU</b></div><div class="bar-back"><div class="bar-fill" id="cpuBar"></div></div><div class="mini-stat" id="cpuStat">0 pontos</div></div></div>
-      <div id="toast" class="toast"></div>
-      <div id="festivalPanel" class="game-panel festival-panel">
-        <div class="beat-top"><span class="beat-instruction">TOQUE NO TEMPO CERTO</span><span id="comboLabel">COMBO × 0</span></div>
-        <div class="beat-row"><span class="beat-side">♫</span><div class="beat-track"><div class="beat-target"></div><div id="beatCue" class="beat-cue"></div></div><span class="beat-side">✦</span></div>
-        <div class="festival-buttons"><button id="beatBtn" class="control-btn rhythm-btn">TOCAR NO RITMO <span>♪</span></button><button id="festivalPower" class="control-btn power-btn">ESPECIAL <span id="festivalCharge">0%</span></button></div>
-        <div class="tiny-help">TECLADO: ESPAÇO = ritmo · E = especial</div>
-      </div>
-      <div id="duelPanel" class="game-panel duel-panel hidden"><div class="duel-controls"><div class="left-controls"><button id="moveLeft" class="control-btn move-btn" aria-label="Mover para esquerda">◀</button><button id="moveRight" class="control-btn move-btn" aria-label="Mover para direita">▶</button></div><div class="right-controls"><button id="defendBtn" class="control-btn def-btn">DEFENDER</button><button id="attackBtn" class="control-btn atk-btn">GOLPE</button><button id="specialBtn" class="control-btn spec-btn">PODER <span id="duelCharge">0%</span></button></div></div><div class="tiny-help">A/D ou ←/→: mover · J: golpear · K: defender · L: poder</div></div>
-      <button id="leaveBtn" class="leave-btn">✕ Encerrar</button>
-    </section>
-    <section id="resultScreen" class="screen result-screen" aria-hidden="true"><div class="result-card"><img src="./favicon.png" class="result-crest" width="94" height="94" alt="Símbolo Batalha das Tribos"><div class="result-ornament">✦</div><div class="eyebrow" id="resultSubtitle">FIM DA DISPUTA</div><h2 id="resultHeading">VITÓRIA!</h2><p id="resultDescription">Sua tribo conquistou a arena.</p><div class="score-summary"><div><small>VOCÊ</small><strong id="finalPlayer">0</strong></div><div class="summary-vs">VS</div><div><small>RIVAL</small><strong id="finalCpu">0</strong></div></div><div id="judgeBoard" class="judge-board hidden"></div><div id="recordLine" class="record-line"></div><button id="rematchBtn" class="primary-btn">JOGAR NOVAMENTE <span>↻</span></button><button id="returnHomeBtn" class="secondary-btn">VOLTAR AO MENU</button></div></section>
-    <section id="teamsScreen" class="screen extra-screen" aria-hidden="true">
-      <div class="screen-head"><button id="teamsBack" class="ghost-btn">‹ Voltar</button><div><div class="eyebrow">EQUIPE OFFLINE</div><h2>Escalação da sua tribo</h2></div></div>
-      <div class="extra-card"><div class="panel-banner"><img src="./favicon.png" width="62" height="62" alt=""><div><b>CLÃ DA SUA TRIBO</b><span>Monte sua escalação de guerreiros</span></div></div><p>Monte uma equipe de três personagens fictícios. O capitão joga as partidas; os demais ficam na escalação para futuras modalidades em grupo.</p>
-        <label>Nome da equipe <input id="teamName" type="text" maxlength="26" placeholder="Ex.: Guardiões do Rio" autocomplete="off"></label>
-        <label>Capitão <select id="captainSelect"><option value="tuxaua">Tuxaua · equilíbrio</option><option value="paje">Pajé · especial</option><option value="guerreira">Guerreira · agilidade</option></select></label>
-        <div id="teamRoster" class="team-roster"></div>
-        <button id="teamSave" class="primary-btn">SALVAR ESCALAÇÃO ✓</button><p id="teamMessage" class="small-note" aria-live="polite"></p>
-      </div>
-    </section>
-    <section id="onlineScreen" class="screen extra-screen" aria-hidden="true">
-      <div class="screen-head"><button id="onlineBack" class="ghost-btn">‹ Voltar</button><div><div class="eyebrow">DUELO ENTRE DOIS CELULARES</div><h2>Sala online privada</h2></div></div>
-      <div class="extra-card"><div class="panel-banner"><img src="./favicon.png" width="62" height="62" alt=""><div><b>ARENA CONECTADA</b><span>Duelo entre duas tribos</span></div></div><p id="onlineStatus" role="status">Verificando conexão…</p>
-        <div id="onlineOptions"><label>Modalidade <select id="onlineMode"><option value="festival">Disputa folclórica</option><option value="duel">Confronto de fantasia</option></select></label>
-        <button id="createRoom" class="primary-btn">CRIAR SALA</button>
-        <div class="or-divider">OU</div>
-        <label>Código da sala <input id="roomCodeInput" type="text" maxlength="6" placeholder="EX.: A1B2C3" autocomplete="off" autocapitalize="characters"></label>
-        <button id="joinRoom" class="secondary-btn">ENTRAR NA SALA</button></div>
-        <div id="onlineWaiting" class="hidden"><h3 id="waitingHeading">Aguardando oponente…</h3><p>Código para compartilhar com a pessoa da tribo adversária:</p><div class="code-row"><strong id="roomCode">------</strong><button id="copyCode" class="ghost-btn">Copiar</button></div><p id="roomWaitingInfo"></p><button id="cancelRoom" class="secondary-btn">SAIR DA SALA</button></div>
-        <p class="small-note">Sem chat ou mensagens entre participantes. Um jogador por tribo; partidas sincronizadas pelo servidor. O online exige Supabase configurado e conexão ativa.</p>
-      </div>
-    </section>
-    <section id="onlineMatchScreen" class="screen extra-screen online-match-screen" aria-hidden="true">
-      <div class="extra-card match-card"><div class="match-watermark" aria-hidden="true"></div>
-        <div class="match-top"><span id="matchMode">DISPUTA ONLINE</span><strong id="matchTimer">00:60</strong></div>
-        <div class="match-score"><div><small id="matchOwnName">VOCÊ</small><strong id="matchOwnScore">0</strong><div id="matchOwnMeter" class="meter"><span></span></div></div><b>VS</b><div><small id="matchOpponentName">RIVAL</small><strong id="matchOpponentScore">0</strong><div id="matchOpponentMeter" class="meter"><span></span></div></div></div>
-        <div class="match-feedback" id="matchFeedback" role="status">Aguardando início…</div>
-        <div class="match-actions" id="matchActions"><button id="matchBeat" class="primary-btn">♫ TOCAR NO RITMO</button><button id="matchStrike" class="primary-btn hidden">⚡ GOLPEAR</button><button id="matchGuard" class="secondary-btn hidden">◈ DEFENDER</button><button id="matchSpecial" class="secondary-btn">✦ ESPECIAL</button></div>
-        <div class="small-note" id="matchHelp">Toque nos pulsos luminosos. A pontuação é confirmada pelo servidor.</div>
-        <button id="exitMatch" class="secondary-btn">ENCERRAR PARTICIPAÇÃO</button>
-      </div>
-    </section>
-
-    <section id="expeditionScreen" class="screen expedition-screen" aria-hidden="true" aria-label="Expedição mundo aberto"><div id="expLookArea" class="exp-look-area" aria-label="Arraste para girar a câmera"></div>
-      <div class="exp-top">
-        <div class="exp-crest"><img id="expCrest" src="./icon-192.png" alt="Cocar das tribos"><div><b id="expTribe">MUNDURUKU</b><small id="expRegion">UNIVERSO MUNDURUKU</small></div></div>
-        <div class="exp-quest"><span>MISSÃO · ABASTECIMENTO DA ALDEIA</span><strong id="expObjective">Colete alimentos pelo mapa</strong><div class="exp-progress"><i id="expProgress"></i></div><small id="expMissionCount">0/5 alimentos · 0/2 peixes · 0/2 registros ou caças · 0/3 amuletos</small></div>
-        <div class="exp-minimap-wrap"><canvas id="expMinimap" width="150" height="150" aria-label="Minimapa da expedição"></canvas><button id="expMapBtn" title="Mapa completo">MAPA ⤢</button></div>
-      </div>
-      <div class="exp-graphics-controls"><span id="expGraphicsStatus">3D WebGL</span><button type="button" id="expGraphics">⚙ GRÁFICOS: NORMAL</button></div><div class="exp-squad" id="expSquad" aria-live="polite"></div><div class="exp-profile-hud"><b id="expProfileLabel">🌿 GUERREIRO</b><span id="expAdventureVitals">💧100% · 🥣100%</span><small id="expWeatherInfo">☁ CÉU DA FLORESTA</small></div><div id="expLevelLabel" class="exp-level">NÍVEL 1 · PODER 75</div><button id="expGuardians" class="exp-guardians" type="button">✦ GUARDIÕES <small id="expGuardianCount">0/5</small></button><button id="expTrails" class="exp-trails" type="button">◈ ROTAS <small id="expTrailCount">0/4</small></button><button id="expFauna" class="exp-fauna" type="button">🐾 BESTIÁRIO <small id="expFaunaCount">0/30</small></button><button type="button" id="expGearButton" class="exp-gear-btn">🎒 EQUIPAMENTOS</button><button id="expMythos" class="exp-mythos-btn" type="button">⚡ TUPÃ · TROVÃO</button><button id="expMedicalButton" type="button" class="exp-med-btn">🧰 KIT MÉDICO</button><span id="expMedicalStatus" class="exp-med-status" data-risk="safe">🧰 KIT DISPONÍVEL</span><span id="expBotanicProgress" class="exp-botanic-hud">0/4 plantas · ○ repelente · ○ poraquê</span><div id="expFaunaAlert" class="exp-fauna-alert" role="status" aria-live="off" hidden></div><div class="exp-survival" title="Saúde do aventureiro"><span>♥ VIDA</span><div class="exp-survival-track" aria-label="Vida 100 de 100"><i id="expSurvivalMeter" style="width:100%"></i></div></div><div class="exp-waypoint" aria-live="off"><span id="expWaypointArrow" class="exp-waypoint-arrow">↑</span><strong id="expWaypoint">Siga até o objetivo</strong></div>
-      <div class="exp-hint" id="expHint">Caminhe pelo mapa e encontre itens brilhantes.</div><div id="expBossHud" class="exp-boss-hud" hidden><b id="expBossName">GUARDIÃO</b><small id="expBossInfo">Área de desafio</small><div class="exp-boss-meter"><i id="expBossFill"></i></div></div>
-      <div class="exp-tools" id="expTools" aria-label="Inventário rápido">
-        <button data-exp-tool="lança" class="selected"><img src="./assets/lança.webp" alt="">Lança</button>
-        <button data-exp-tool="arco"><img src="./assets/arco.webp" alt="">Arco</button>
-        <button data-exp-tool="escudo"><img src="./assets/escudo.webp" alt="">Escudo</button>
-        <button data-exp-tool="bolsa"><img src="./assets/bolsa.webp" alt="">Bolsa</button>
-      </div>
-      <div class="exp-joy" id="expJoystick" role="group" aria-label="Joystick para movimentação"><div id="expStick"></div></div>
-      <div class="exp-actions"><button id="expRun" class="exp-action"><span>➤</span>CORRER</button><button id="expAttack" class="exp-action exp-attack"><span>⚔</span>CONFRONTO</button><button id="expInteract" class="exp-action exp-main"><span>✋</span>COLETAR</button><button id="expCommand" class="exp-action"><span>♟</span>EQUIPE</button></div>
-      <button id="expLeave" class="exp-leave">✕ Menu</button>
-      <div id="expMessage" class="exp-message" role="status" aria-live="polite"></div>
-      <dialog id="expGearDialog" class="exp-dialog exp-gear-dialog"><h2>🎒 Equipamentos e sobrevivência</h2><p>Selecione itens para usar. Números e benefícios são abstrações fictícias de jogo, não instruções médicas nem de armas.</p><p id="expGearStats"></p><div id="expGearCards" class="exp-gear-grid"></div><p id="expGearNote"></p><button type="button" id="expCloseGear" class="primary-btn">VOLTAR À EXPEDIÇÃO</button></dialog>
-      <dialog id="expMedicalDialog" class="exp-dialog exp-med-dialog"><h2>🧰 Kit médico, plantas e sobrevivência V1.9</h2><p>Atendimentos, repelentes, medicamentos e todos os benefícios são simulações de jogo. Plantas não curam envenenamento.</p><div id="expMedicalContent"></div><button id="expCloseMedical" type="button" class="primary-btn">VOLTAR À EXPEDIÇÃO</button></dialog>
-      <dialog id="expMythosDialog" class="exp-dialog exp-mythos-dialog"><h2>⚡ Tupã · Voz do Trovão</h2><p><strong>Tupã</strong> é relacionado ao trovão em tradições tupi-guarani; não representa o deus supremo de todos os povos indígenas.</p><p>O povo Munduruku possui tradições próprias que incluem <strong>Karosakaybu</strong>, importante figura criadora. Este jogo mistura elementos de ficção e lendas distintas, sem representar rituais reais.</p><p>Na Expedição, o trovão é um fenômeno da natureza: escurecimento do céu, relâmpagos e chuva. Tupã não é um inimigo e não pode ser atacado.</p><button id="expStormDemo" type="button" class="secondary-btn">⚡ OBSERVAR UMA TEMPESTADE</button><button id="expCloseMythos" type="button" class="primary-btn">VOLTAR À FLORESTA</button></dialog>
-      <dialog id="expFaunaDialog" class="exp-dialog exp-fauna-dialog"><h2>🐾 Bestiário da Floresta</h2><p>Explore os habitats e descubra 30 encontros: animais reais e personagens lendários claramente identificados. O contato perigoso reduz sua saúde; observe, use o escudo, afugente ou se afaste. Boto e uirapuru são encontros amistosos. As criaturas são modelos 3D estilizados e seu comportamento é fictício.</p><div id="expFaunaCards" class="exp-fauna-cards"></div><button id="expCloseFauna" class="primary-btn" type="button">VOLTAR À FLORESTA</button></dialog>
-      <dialog id="expInventory" class="exp-dialog"><h2>🎒 Mochila e missão</h2><div id="expInventoryContent"></div><p>Recursos e pontuação são salvos apenas neste aparelho. Itens de fantasia, sem conexão com ritos reais.</p><button id="expCloseInventory" class="primary-btn">FECHAR</button></dialog>
-      <dialog id="expTrailsDialog" class="exp-dialog exp-trails-dialog"><h2>◈ Rotas da Floresta</h2><p>Explore livremente e encontre os quatro marcos. Cada descoberta concede experiência uma única vez por tribo e arena. Selecione uma rota para seguir a seta no topo.</p><div id="expTrailCards" class="exp-trail-cards"></div><button id="expCloseTrails" class="primary-btn">VOLTAR À EXPEDIÇÃO</button></dialog><dialog id="expFullMap" class="exp-dialog"><h2>🗺 Mapa da expedição</h2><canvas id="expBigMap" width="340" height="340"></canvas><p id="expMapLegend">🟡 Alimentos · 🔵 Pesca · 🟣 Amuletos · 🔴 Rivais · ◆ Guardiões · 🟠 Rotas · 🔺 Fauna perigosa · 🟢 Animais amigáveis · 🟣 Seres lendários · 🌿 Plantas medicinais fictícias</p><button id="expCloseMap" class="primary-btn">VOLTAR À EXPLORAÇÃO</button></dialog>
-    </section>
-  </main>
-      <dialog id="expGuardianDialog" class="exp-dialog guardian-dialog"><div class="guardian-header"><div><small class="guardian-eyebrow">MISSÕES LENDÁRIAS · MODO OFFLINE</small><h2>✦ Os cinco Guardiões</h2><p>Explore o território, fortaleça sua tribo e supere os desafios. Avance em ordem para liberar novos desafios.</p></div><img src="./favicon.png" alt="Cocar" width="68" height="68"></div>
-        <div class="guardian-progress"><strong id="guardianCurrentLevel">Nível 1</strong><span>Progresso salvo por tribo neste aparelho</span></div>
-        <div class="guardian-mode"><button id="guardianTeamMode" class="secondary-btn selected" type="button">♟ EQUIPE DE 3</button><button id="guardianSoloMode" class="secondary-btn" type="button">♙ SOZINHO</button></div>
-        <p class="guardian-note">O modo solo exige níveis maiores. No modo equipe, os dois aliados ajudam na defesa. A vitória sobre cada Guardião libera um amuleto e mais poder. As representações são fantasia inspirada em lendas de diferentes tradições.</p>
-        <div id="expGuardianList" class="guardian-list"></div><button id="guardianClose" class="primary-btn">VOLTAR AO JOGO</button><button id="guardianReset" class="secondary-btn danger-btn" type="button">REINICIAR SOMENTE PROGRESSO DOS GUARDIÕES</button>
-      </dialog>
-  <dialog id="accessDialog" class="access-dialog"><form method="dialog" id="accessForm">
-      <div class="access-heading"><img src="./favicon.png" width="86" height="86" alt="Cocar símbolo das duas tribos"><div><div class="hero-tag">BEM-VINDO À ARENA</div><h2>Cadastro do jogador</h2></div></div>
-      <p>Use um <strong>apelido</strong>, nunca seu nome completo. Para jogar pedimos seu nome de exibição e idade, sem CPF, telefone ou endereço.</p>
-      <label>Nome de exibição <input id="playerNick" type="text" maxlength="24" minlength="2" autocomplete="nickname" required placeholder="Seu apelido"></label>
-      <label>Idade <input id="playerAge" type="number" min="1" max="120" required inputmode="numeric" placeholder="Sua idade"></label>
-      <div class="dialog-tribes"><label><input type="radio" name="faveTribe" value="munduruku" checked> Munduruku</label><label><input type="radio" name="faveTribe" value="muirapinima"> Muirapinima</label></div>
-      <label class="check-label"><input id="privacyAgree" type="checkbox" required><span>Li o <a href="./privacidade.html" target="_blank" rel="noopener">Aviso de Privacidade</a> e compreendi como meus dados são utilizados.</span></label>
-      <p class="small-note">Idade usada apenas nesta sessão para liberar recursos apropriados. Menores de 18 anos usam o modo offline nesta versão. O online requer configuração e controles adicionais antes de uso público por menores.</p>
-      <div id="accessError" class="form-error" role="alert"></div><button class="primary-btn" type="submit">ENTRAR NO JOGO</button><button id="deleteProfile" type="button" class="secondary-btn danger-btn">EXCLUIR PERFIL E ESCALAÇÃO</button>
-    </form></dialog>
-  <footer class="footer"><span>JURUTI · PARÁ · AMAZÔNIA · <a href="./privacidade.html" class="privacy-footer">PRIVACIDADE</a></span><span id="statusLine">Kit de Sobrevivência e Rios · V1.9</span></footer>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#101713"><meta name="description" content="Batalha Munduruku vs Muirapinima — prévia jogável 2.1 Guardiões da Floresta."><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><title>Batalha Munduruku vs Muirapinima • 2.1</title></head><body>
+<div id="shell">
+<section id="menu" class="screen" aria-label="Menu principal">
+ <div class="ambient ambient1"></div><div class="ambient ambient2"></div>
+ <header class="topline"><span class="monogram">BM <b>VS</b> MM</span><span class="top-badge">PRÉVIA JOGÁVEL • V2.1</span></header>
+ <div class="hero">
+  <div class="hero-visual"><img src="assets/logo-aprovado.webp" alt="Arte aprovada do jogo Batalha Munduruku vs Muirapinima"><span class="art-credit">Arte original aprovada para o projeto</span></div>
+  <div class="hero-text"><p class="overline">GUARDIÕES DA FLORESTA • AMAZÔNIA FANTÁSTICA</p><h1>Uma floresta.<br><em>Duas tradições.</em><br>Seu caminho.</h1><p>Explore a mata, registre a fauna, descubra artefatos e enfrente guardiões lendários em uma experiência de sobrevivência.</p><div class="hero-actions"><button id="btnStart" class="primary">INICIAR EXPEDIÇÃO <span>➜</span></button><button id="btnCollection" class="ghost">VER ARSENAL E BESTIÁRIO</button></div><div class="smallprint">Demonstração independente em 2D com interface renovada. Não substitui a versão 1.9.</div></div>
+ </div>
+ <footer class="menu-footer"><span>JURUTI • PARÁ • BRASIL</span><span>PROTÓTIPO OFFLINE • SEM CADASTRO</span></footer>
+</section>
+<section id="selectScreen" class="screen hidden" aria-label="Seleção de personagem">
+<header class="subhead"><button class="back" id="backMenu">← VOLTAR</button><span>CRIAÇÃO DE PERSONAGEM</span><span>ETAPA 01 / 02</span></header>
+<div class="selection-wrap"><div class="selection-title"><p class="overline">O CAMINHO COMEÇA AQUI</p><h2>Escolha sua jornada</h2><p>O explorador pode atuar de forma independente; o guerreiro pode escolher uma das equipes temáticas do jogo.</p></div>
+<div class="select-grid"><button class="faction selected" data-faction="munduruku"><span class="flag warm"></span><span class="faction-icon">✹</span><b>MUNDURUKU</b><small>Vermelho · Amarelo</small><span class="faction-desc">Arenas de trovão e trilhas ensolaradas</span></button><button class="faction" data-faction="muirapinima"><span class="flag cool"></span><span class="faction-icon">◈</span><b>MUIRAPINIMA</b><small>Azul · Vermelho</small><span class="faction-desc">Igarapés, névoa e estratégia</span></button><button class="faction" data-faction="livre"><span class="flag free"></span><span class="faction-icon">❧</span><b>EXPLORADOR LIVRE</b><small>Sem equipe</small><span class="faction-desc">Observação, travessia e sobrevivência</span></button></div>
+<div class="class-form"><label for="heroClass">PERFIL DE PERSONAGEM</label><select id="heroClass"><option value="explorador">Explorador(a)</option><option value="guerreiro">Guerreiro(a)</option><option value="cacador">Rastreador(a)</option><option value="guardiao">Protetor(a)</option></select><button class="primary" id="enterGame">ENTRAR NA FLORESTA <span>➜</span></button></div></div>
+</section>
+<section id="gameScreen" class="screen hidden" aria-label="Expedição jogável">
+ <canvas id="gameCanvas" aria-label="Mapa da floresta com personagem e animais"></canvas>
+ <div class="screen-shade"></div>
+ <header class="game-head"><div class="brand"><span class="brandmark">BM</span><span><b>GUARDIÕES DA FLORESTA</b><small id="factionLabel">EXPEDIÇÃO • MUNDURUKU</small></span></div><div class="status-bar"><div class="status"><span>VIDA</span><div class="meter"><i id="hpFill"></i></div><strong id="hpText">100</strong></div><div class="status"><span>ENERGIA</span><div class="meter energy"><i id="stFill"></i></div></div><button class="hud-btn" data-panel="menu">☰ <span>MENU</span></button></div></header>
+ <aside class="quest"><span class="overline">MISSÃO ATIVA</span><h3>Cartógrafo da Floresta</h3><p>Registre 3 animais e colete 4 ervas.</p><div class="quest-step"><span>Animais registrados</span><b id="observedCount">0 / 3</b></div><div class="quest-step"><span>Ervas coletadas</span><b id="herbCount">0 / 4</b></div><div class="quest-step"><span>EXPERIÊNCIA</span><b id="xpCount">0 XP</b></div></aside>
+ <div id="toast" role="status"></div>
+ <div class="world-tags"><span id="regionTag">MATA DAS ÁGUAS</span><span id="timeTag">DIA · TEMPO LIMPO</span></div>
+ <div class="bottom-ui"><div id="dpad" class="dpad" aria-label="Direcional de movimento"><button data-dir="up" aria-label="Mover para cima">▲</button><button data-dir="left" aria-label="Mover para esquerda">◀</button><button data-dir="down" aria-label="Mover para baixo">▼</button><button data-dir="right" aria-label="Mover para direita">▶</button></div><div class="action-cluster"><button class="action" id="btnInteract"><span>✦</span><small>OBSERVAR / COLETAR</small></button><button class="action attack" id="btnAttack"><span>⚔</span><small>ATACAR GUARDIÃO</small></button><button class="action" id="btnHeal"><span>✚</span><small>USAR CURATIVO</small></button></div></div>
+ <nav class="game-nav" aria-label="Navegação"><button data-panel="inventario">MOCHILA</button><button data-panel="armas">ARSENAL</button><button data-panel="bestiario">BESTIÁRIO</button><button data-panel="mapa">MAPA</button></nav>
+</section>
+<div id="drawerOverlay" class="drawer-overlay hidden"></div><aside id="drawer" class="drawer hidden" aria-label="Painel de jogo"><header class="drawer-head"><div><p class="overline" id="drawerEyebrow">CATÁLOGO</p><h2 id="drawerTitle">Arsenal</h2></div><button id="closeDrawer" aria-label="Fechar painel">✕</button></header><div id="drawerContent"></div></aside>
+<div id="welcome" class="modal-overlay hidden"><div class="modal"><p class="overline">BOAS-VINDAS À EXPEDIÇÃO</p><h2>Conheça os controles</h2><p>Use <b>WASD / setas</b> ou o direcional da tela. Aproxime-se de recursos e animais e pressione <b>Observar / Coletar</b>. Encontros com guardiões místicos permitem combate fantástico.</p><p>Seu progresso nesta prévia é salvo somente neste navegador, separado do jogo anterior.</p><button id="closeWelcome" class="primary">COMEÇAR A EXPLORAR</button></div></div>
 </div>
-<script src="./config.js" defer></script>
-<script src="./game.js" defer></script>
-<script src="./social.js" defer></script>
-<script src="./exploration.js" defer></script>
-<script src="./guardians.js" defer></script>
-<script src="./trails.js" defer></script>
-<script src="./fauna.js" defer></script>
-<script src="./expedition3d.js" defer></script>
-<script src="./adventure18.js" defer></script>
-<script src="./mythos18.js" defer></script>
-<script src="./survival19.js" defer></script>
-</body>
-</html>
+<script type="module" src="app.js"></script>
+</body></html>
