@@ -1,0 +1,17 @@
+BATALHA MUNDURUKU VS MUIRAPINIMA — V2.1.1 CORRIGIDA
+
+O problema da tela inicial sem acesso foi tratado eliminando dependências de pastas: os dados do jogo, scripts, gráficos vetoriais, estilo e logotipo agora ficam no próprio HTML.
+
+COMO INSTALAR NO GITHUB PAGES (SEM APAGAR A V1.9):
+1. Extraia este ZIP no celular.
+2. Abra seu repositório no GitHub, acesse Add file > Upload files.
+3. Envie APENAS o arquivo jogar-v211.html e confirme Commit changes.
+4. Acesse https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/jogar-v211.html
+5. Toque em INICIAR EXPEDIÇÃO > escolha personagem > ENTRAR NA FLORESTA > COMEÇAR A EXPLORAR.
+
+O nome jogar-v211.html é novo de propósito: evita abrir a página antiga preservada no cache.
+Se preferir substituir totalmente a tela principal após testar, carregue também index.html, tomando cuidado para não apagar a versão 1.9.
+
+Esta entrega é uma prévia 2D e NÃO é a versão 3D realista final. O progresso de protótipo continua separado da V1.9.
+
+Se ainda abrir a versão anterior, copie a URL completa com o arquivo jogar-v211.html no final. Não apague os dados do site para não perder o progresso.
