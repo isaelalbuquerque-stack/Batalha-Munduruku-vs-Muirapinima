@@ -1,0 +1,4 @@
+BATALHA MUNDURUKU VS. MUIRAPINIMA — V2.2
+Novo: 5 missões, minimapa, fabricação fictícia de suprimentos, diario, XP e exportação/importação de progresso.
+Publicação: envie index.html descompactado ao diretório raiz do GitHub Pages.
+Esta é uma prévia 2D; a V1.9 original não foi mesclada.
